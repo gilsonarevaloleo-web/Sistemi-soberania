@@ -1,119 +1,327 @@
-index.html
+import React, { useState, useEffect } from 'react';
+import { 
+  Gauge, 
+  Flame, 
+  BrainCircuit, 
+  LayoutDashboard, 
+  ShieldCheck, 
+  Bot, 
+  ChevronRight, 
+  Zap, 
+  PlusCircle, 
+  Download,
+  Info,
+  History,
+  Lock
+} from 'lucide-react';
 
-<title>SISTEMI - Nodo Soberano</title> <script src=" https://cdn.tailwindcss.com"></script> <style> body { font-family: 'Inter', sans-serif; background-color: #020202; color: #cbd5e1; } .font-cinzel { font-family: 'Cinzel', serif; } .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); } .scanners-glow { box-shadow: 0 0 20px rgba(202, 138, 4, 0.15); } </style>
-<!-- Pantalla de Bloqueo (Login) -->
-<div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black p-6">
-    <div class="max-w-md w-full glass p-10 rounded-[3rem] text-center">
-        <div class="mb-8 inline-flex p-4 bg-yellow-600/10 rounded-2xl border border-yellow-600/20">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h2 class="font-cinzel text-3xl text-white tracking-[0.3em] mb-2">SISTEMI</h2>
-        <p class="text-[10px] text-slate-500 uppercase tracking-widest mb-10">Acceso del Arquitecto</p>
-        
-        <input id="admin-key-input" type="password" placeholder="Clave de Admin" 
-            class="w-full bg-black/50 border border-white/5 rounded-2xl py-4 px-6 text-center text-white outline-none focus:border-yellow-600/50 mb-4 transition-all">
-        
-        <button onclick="verifyAccess()" 
-            class="w-full py-4 bg-yellow-600 text-black font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-yellow-500 transition-all">
-            Activar Nodo
-        </button>
-    </div>
-</div>
+/**
+ * SISTEMICAR - Arquitectura de Soberanía Humana
+ * Diseñado por: Arquitecto Gilson
+ * Propósito: Gestión de Energía Mental y Transmutación de Carga Cognitiva
+ */
 
-<!-- Interfaz Principal -->
-<div id="main-interface" class="hidden">
-    <div class="bg-yellow-600 py-1.5 text-center">
-        <p class="text-[9px] font-black text-black uppercase tracking-[0.5em]">Nodo Independiente Netlify Activado</p>
-    </div>
+const App = () => {
+  const [activeTab, setActiveTab] = useState('scanner');
+  const [isPrivacyActive, setIsPrivacyActive] = useState(false);
+  const [scannerStep, setScannerStep] = useState(1);
+  const [energyScore, setEnergyScore] = useState(null);
+  
+  // Estado de los 4 Filtros de Gilson
+  const [filters, setFilters] = useState({
+    enfoque: 50,
+    conflicto: 50,
+    carga: 50,
+    solucion: 50
+  });
 
-    <nav class="max-w-7xl mx-auto p-8 flex justify-between items-center border-b border-white/5">
+  const handleSelection = (field, value) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
+    if (scannerStep < 4) {
+      setScannerStep(scannerStep + 1);
+    } else {
+      calculateResult();
+    }
+  };
+
+  const calculateResult = () => {
+    // Algoritmo: (Enfoque + Solución) - (Conflicto + Carga)
+    const { enfoque, conflicto, carga, solucion } = filters;
+    let score = ((enfoque + solucion) - (conflicto + carga));
+    // Normalización a escala 0-100 para visualización
+    score = Math.max(5, Math.min(100, (score + 190) / 3.8));
+    setEnergyScore(Math.round(score));
+    setScannerStep(5); // Pantalla de Resultados
+  };
+
+  const resetScanner = () => {
+    setScannerStep(1);
+    setEnergyScore(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#050505] text-zinc-300 font-sans pb-28">
+      
+      {/* HEADER DINÁMICO */}
+      <header className="p-6 flex justify-between items-center sticky top-0 bg-black/60 backdrop-blur-2xl border-b border-white/5 z-50">
         <div>
-            <h1 class="font-cinzel text-3xl text-white tracking-widest">SISTEMI</h1>
-            <p class="text-[9px] text-slate-500 uppercase tracking-[0.2em]">Arquitectura Gilson Arévalo</p>
+          <h1 className="text-xl font-serif italic text-white tracking-tight">SISTEMICAR</h1>
+          <p className="text-[7px] uppercase tracking-[0.4em] text-yellow-600 font-black">Bio-Intelligence Platform</p>
         </div>
-        <div class="flex items-center gap-4 bg-white/5 px-6 py-3 rounded-2xl border border-white/10">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sincronizado</span>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setIsPrivacyActive(!isPrivacyActive)}
+            className={`p-2 rounded-xl border transition-all ${isPrivacyActive ? 'border-yellow-600 text-yellow-600 shadow-[0_0_10px_rgba(202,138,4,0.2)]' : 'border-zinc-800 text-zinc-600'}`}
+          >
+            {isPrivacyActive ? <ShieldCheck size={18} /> : <Lock size={18} />}
+          </button>
+          <div className="h-8 w-[1px] bg-white/10 mx-1"></div>
+          <div className="text-right">
+            <p className="text-[10px] font-black text-white">{energyScore ? `${energyScore}%` : '--%'}</p>
+            <p className="text-[6px] text-zinc-500 uppercase font-bold tracking-widest">Energía</p>
+          </div>
         </div>
-    </nav>
+      </header>
 
-    <main class="max-w-7xl mx-auto p-8 lg:p-12">
-        <!-- Estadísticas -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div class="glass p-8 rounded-[2.5rem] hover:border-yellow-600/20 transition-all group">
-                <p class="text-[10px] uppercase text-slate-500 tracking-widest mb-1">Comunidad</p>
-                <h4 class="text-3xl font-black text-white tracking-tighter">1000 <span class="text-xs text-slate-600 uppercase">Almas</span></h4>
-            </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-yellow-600/20 transition-all">
-                <p class="text-[10px] uppercase text-slate-500 tracking-widest mb-1">Energía</p>
-                <h4 id="energy-val" class="text-3xl font-black text-white tracking-tighter">88%</h4>
-            </div>
-            <div class="glass p-8 rounded-[2.5rem] hover:border-yellow-600/20 transition-all">
-                <p class="text-[10px] uppercase text-slate-500 tracking-widest mb-1">Rango</p>
-                <h4 class="text-3xl font-black text-white tracking-tighter font-cinzel italic uppercase">Arquitecto</h4>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Oráculo -->
-            <div class="bg-gradient-to-br from-zinc-900 to-black p-10 rounded-[3.5rem] border border-white/10 flex flex-col justify-between min-h-[350px]">
-                <h3 class="text-[11px] font-black text-yellow-600 uppercase tracking-[0.4em] mb-8">El Oráculo Gemini</h3>
-                <p id="oracle-text" class="text-2xl text-white font-cinzel leading-relaxed mb-8">
-                    "SISTEMI ha trascendido. Los datos fluyen libres de la red de Replit."
-                </p>
-                <button onclick="askOracle()" class="w-full py-5 bg-white text-black font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:scale-[1.02] transition-transform">
-                    Consultar al Oráculo
-                </button>
-            </div>
-
-            <!-- Módulos -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="glass p-8 rounded-[3rem] hover:bg-white/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center">
-                    <div class="mb-4 text-blue-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                    <span class="text-[10px] font-bold text-white uppercase tracking-widest">Maestría</span>
+      <main className="max-w-md mx-auto p-6 space-y-8 animate-in fade-in duration-700">
+        
+        {/* VISTA 1: ESCÁNER (BIO-MANÓMETRO) */}
+        {activeTab === 'scanner' && (
+          <section className="space-y-8">
+            {scannerStep <= 4 ? (
+              <div className="space-y-8">
+                <div className="space-y-3">
+                  <div className="flex gap-1.5">
+                    {[1, 2, 3, 4].map(i => (
+                      <div key={i} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${scannerStep >= i ? 'bg-yellow-600' : 'bg-zinc-800'}`} />
+                    ))}
+                  </div>
+                  <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-black">Filtro de Análisis {scannerStep}/4</p>
+                  <h2 className="text-2xl font-serif italic text-white leading-tight">
+                    {scannerStep === 1 && "¿Qué tan clara está tu visión ahora mismo?"}
+                    {scannerStep === 2 && "¿Hay conflicto interno entre tu cuerpo y tu mente?"}
+                    {scannerStep === 3 && "¿Cuántas 'pestañas' de seguimiento tienes abiertas?"}
+                    {scannerStep === 4 && "¿Cómo te sientes ante tu mayor problema actual?"}
+                  </h2>
                 </div>
-                <div class="glass p-8 rounded-[3rem] hover:bg-white/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center">
-                    <div class="mb-4 text-orange-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
-                    <span class="text-[10px] font-bold text-white uppercase tracking-widest">Flujo</span>
+                
+                <div className="grid gap-3">
+                  {scannerStep === 1 && (
+                    <>
+                      <button onClick={() => handleSelection('enfoque', 100)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Objetivo láser y único." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('enfoque', 50)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Idea general pero con dudas." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('enfoque', 10)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Solo operando en reacción." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                    </>
+                  )}
+                  {scannerStep === 2 && (
+                    <>
+                      <button onClick={() => handleSelection('conflicto', 0)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Sintonía total." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('conflicto', 50)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Fricción biológica (cansancio/tedio)." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('conflicto', 95)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Guerra civil interna." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                    </>
+                  )}
+                  {scannerStep === 3 && (
+                    <>
+                      <button onClick={() => handleSelection('carga', 10)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Una sola tarea enfrente." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('carga', 55)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Varias fuentes de estrés." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('carga', 95)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Saturación cognitiva total." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                    </>
+                  )}
+                  {scannerStep === 4 && (
+                    <>
+                      <button onClick={() => handleSelection('solucion', 100)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Dominio y control." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('solucion', 50)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Esfuerzo constante." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                      <button onClick={() => handleSelection('solucion', 10)} className="p-6 rounded-[2rem] bg-white/5 border border-white/5 text-left text-sm italic hover:border-yellow-600/50 transition-all active:scale-95 group flex justify-between items-center">
+                        "Sensación de asfixia." <ChevronRight size={14} className="text-zinc-700 group-hover:text-yellow-600" />
+                      </button>
+                    </>
+                  )}
                 </div>
-                <div class="glass p-8 rounded-[3rem] hover:bg-white/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center">
-                    <div class="mb-4 text-green-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
-                    <span class="text-[10px] font-bold text-white uppercase tracking-widest">Esperanza</span>
+              </div>
+            ) : (
+              <div className="space-y-8 text-center animate-in zoom-in-95 duration-500">
+                <div className="relative inline-block">
+                  <div className="w-56 h-56 rounded-full border-[8px] border-yellow-600/10 flex flex-col items-center justify-center relative z-10">
+                    <span className="text-7xl font-black text-white italic tracking-tighter">{energyScore}%</span>
+                    <span className="text-[9px] uppercase font-black text-yellow-600 tracking-[0.3em] mt-1">Soberanía Real</span>
+                  </div>
+                  <div className="absolute inset-0 bg-yellow-600/5 blur-3xl rounded-full"></div>
                 </div>
-                <div class="glass p-8 rounded-[3rem] hover:bg-white/5 transition-all cursor-pointer text-center flex flex-col items-center justify-center">
-                    <div class="mb-4 text-purple-500"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
-                    <span class="text-[10px] font-bold text-white uppercase tracking-widest">Estrategia</span>
+                
+                <div className="glass rounded-[2.5rem] p-8 border-l-4 border-yellow-600 text-left space-y-4 shadow-xl">
+                  <div className="flex items-center gap-2">
+                    <Bot size={18} className="text-yellow-600" />
+                    <span className="text-[10px] uppercase font-black text-white tracking-[0.2em]">Protocolo Sugerido</span>
+                  </div>
+                  <p className="text-xs italic leading-relaxed text-zinc-300">
+                    {energyScore > 80 ? "Estado de Flujo Crítico. Es momento de atacar las tareas de alta ingeniería y decisiones de poder." : 
+                     energyScore > 55 ? "Rendimiento Estable. Mantén el ritmo, pero protege tu enfoque cerrando procesos secundarios." :
+                     "Colapso Entrópico Detectado. Detén la producción y aplica 20 minutos de silencio absoluto fuera de pantallas."}
+                  </p>
                 </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <button 
+                    onClick={resetScanner}
+                    className="py-5 bg-white text-black rounded-3xl font-black uppercase text-[10px] tracking-widest active:scale-95 transition-all"
+                  >
+                    Nuevo Escaneo
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('alquimia')}
+                    className="py-5 bg-zinc-900 text-white rounded-3xl font-black uppercase text-[10px] tracking-widest active:scale-95 transition-all border border-white/5"
+                  >
+                    Ir a Alquimia
+                  </button>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* VISTA 2: ALQUIMIA (TRANSMUTACIÓN) */}
+        {activeTab === 'alquimia' && (
+          <section className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+            <div className="text-center space-y-2">
+              <h2 className="text-3xl font-serif italic text-white leading-none">Libro de Alquimia</h2>
+              <p className="text-[9px] uppercase tracking-[0.4em] text-zinc-500 font-bold">Transmuta el plomo en oro mental</p>
             </div>
-        </div>
-    </main>
+            
+            <div className="glass rounded-[3rem] p-8 space-y-8 border border-white/5 shadow-2xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 p-4 opacity-10"><Flame size={120} /></div>
+               
+               <div className="space-y-3 relative">
+                 <p className="text-[10px] font-black text-yellow-600 uppercase italic flex items-center gap-2">
+                   <Zap size={12} /> Situación de Fricción
+                 </p>
+                 <textarea 
+                   className={`w-full bg-transparent border-b border-white/10 text-sm italic outline-none min-h-[100px] py-2 resize-none transition-all ${isPrivacyActive ? 'blur-md focus:blur-none' : ''}`}
+                   placeholder="Describe el conflicto o carga que drena tu energía..."
+                 />
+               </div>
 
-    <footer class="p-16 text-center opacity-30 hover:opacity-100 transition-all">
-        <p class="text-[8px] uppercase tracking-[1em] text-slate-500">Gilson Arévalo Pezo • SISTEMI v2.5 Independiente</p>
-    </footer>
-</div>
+               <div className="space-y-3 relative">
+                 <p className="text-[10px] font-black text-yellow-600 uppercase italic flex items-center gap-2">
+                   <BrainCircuit size={12} /> Máxima de Soberanía
+                 </p>
+                 <input 
+                   type="text"
+                   className={`w-full bg-white/5 p-5 rounded-3xl text-xs italic outline-none border border-white/5 focus:border-yellow-600/30 transition-all ${isPrivacyActive ? 'blur-md focus:blur-none' : ''}`}
+                   placeholder="Destila la lección en una frase maestra..."
+                 />
+               </div>
 
-<script>
-    // --- CONSTANTES RECUPERADAS ---
-    const ADMIN_KEY = "198810";
-    
-    function verifyAccess() {
-        const val = document.getElementById('admin-key-input').value;
-        if (val === ADMIN_KEY) {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-interface').classList.remove('hidden');
-        } else {
-            alert("Clave de Administrador Incorrecta");
-        }
-    }
+               <button className="w-full py-5 bg-gradient-to-r from-yellow-600 to-yellow-700 text-black font-black rounded-3xl flex items-center justify-center gap-3 uppercase text-[10px] tracking-[0.3em] shadow-[0_10px_20px_rgba(202,138,4,0.2)] active:scale-95 transition-all">
+                 Destilar Oro Mental <Flame size={16} />
+               </button>
+            </div>
+          </section>
+        )}
 
-    function askOracle() {
-        const phrases = [
-            "El flujo de los 1000 suscriptores está asegurado.",
-            "La soberanía tecnológica es el primer paso a la libertad.",
-            "SISTEMI respira ahora en un nodo independiente.",
-            "La arquitectura de Gilson Arévalo no tiene límites."
-        ];
-        document.getElementById('oracle-text').innerText = phrases[Math.floor(Math.random()*phrases.length)];
-    }
-</script>
+        {/* VISTA 3: SABIDURÍA (BÓVEDA) */}
+        {activeTab === 'wisdom' && (
+          <section className="space-y-8 animate-in slide-in-from-right-4 duration-500">
+            <div className="flex justify-between items-end">
+              <div className="space-y-1">
+                <h2 className="text-3xl font-serif italic text-white">Bóveda</h2>
+                <p className="text-[9px] uppercase tracking-widest text-zinc-500 font-bold italic">Activos de Conciencia</p>
+              </div>
+              <button className="p-3 bg-white/5 rounded-2xl border border-white/10 text-yellow-600 hover:bg-yellow-600 hover:text-black transition-all">
+                <PlusCircle size={20} />
+              </button>
+            </div>
+
+            <div className="grid gap-5">
+              {[
+                { cat: 'Soberanía', text: 'El flujo de caja es el sistema circulatorio de la libertad.', power: '85%' },
+                { cat: 'Estrategia', text: 'El silencio es el servidor donde se procesa la visión.', power: '92%' },
+                { cat: 'Biología', text: 'Un cuerpo agotado es un arquitecto sin herramientas.', power: '70%' }
+              ].map((item, idx) => (
+                <div key={idx} className="glass p-7 rounded-[2.5rem] border border-white/5 hover:border-yellow-600/30 transition-all group relative overflow-hidden">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-[8px] bg-yellow-600/20 text-yellow-600 px-3 py-1 rounded-full font-black uppercase tracking-widest">{item.cat}</span>
+                    <span className="text-[8px] text-zinc-600 font-bold uppercase italic group-hover:text-yellow-600 transition-colors">Potencia: {item.power}</span>
+                  </div>
+                  <p className={`text-sm italic leading-relaxed text-zinc-200 ${isPrivacyActive ? 'blur-md select-none' : ''}`}>
+                    "{item.text}"
+                  </p>
+                  <div className="flex justify-end mt-4">
+                    <button className="text-[8px] font-black uppercase text-zinc-500 hover:text-white flex items-center gap-1 tracking-tighter">
+                      Ver Maduración <ChevronRight size={12} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* VISTA 4: LICENCIA (DASHBOARD PROFESIONAL) */}
+        {activeTab === 'report' && (
+          <section className="space-y-8 animate-in fade-in duration-500">
+            <div className="text-center space-y-1">
+              <h2 className="text-3xl font-serif italic text-white leading-none">Licencia Operativa</h2>
+              <p className="text-[9px] uppercase tracking-[0.4em] text-zinc-500 font-bold">Aptitud y Rendimiento Certificado</p>
+            </div>
+
+            <div className="relative p-[1px] rounded-[3.5rem] bg-gradient-to-br from-yellow-600/40 via-transparent to-yellow-600/20 shadow-2xl overflow-hidden">
+              <div className="bg-[#050505] p-10 rounded-[3.45rem] space-y-8 relative">
+                <div className="absolute top-0 right-0 p-8 opacity-5"><Zap size={140} /></div>
+                
+                <div className="flex justify-center">
+                  <div className="p-4 bg-yellow-600/10 rounded-full border border-yellow-600/20">
+                    <ShieldCheck size={40} className="text-yellow-600" />
+                  </div>
+                </div>
+
+                <div className="text-center space-y-2">
+                  <h3 className="text-lg font-black uppercase tracking-[0.3em] text-white">Soberano Apto</h3>
+                  <div className="flex justify-center gap-1">
+                    {[1, 2, 3, 4, 5].map(i => <Zap key={i} size={10} className="fill-yellow-600 text-yellow-600" />)}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                  <div className="space-y-1 text-center border-r border-white/5">
+                    <p className="text-[7px] text-zinc-500 uppercase font-black tracking-widest">Score Medio 72h</p>
+                    <p className="text-xl font-serif italic text-white">{energyScore || '78'}%</p>
+                  </div>
+                  <div className="space-y-1 text-center">
+                    <p className="text-[7px] text-zinc-500 uppercase font-black tracking-widest">Nivel de Rango</p>
+                    <p className="text-sm font-black text-yellow-600 uppercase">Arquitecto</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 pt-6">
+                  <div className="flex justify-between items-center text-[9px] font-bold uppercase tracking-widest text-zinc-400">
+                    <span>Enfoque Láser</span>
+                    <span className="text-white italic">8.5 / 10</span>
+                  </div>
+                  <div className="w-full h-1 bg-zinc-900 rounded-full">
+                    <div className="h-full bg-yellow-600 w-[85%] rounded-full shadow-[0_0_8px_#ca8a04]"></div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center text-[9px] font-bold uppercase tracking-widest text-zinc-400 mt-4">
+                    <sp
