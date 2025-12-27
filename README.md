@@ -324,4 +324,89 @@ const App = () => {
                   </div>
                   
                   <div className="flex justify-between items-center text-[9px] font-bold uppercase tracking-widest text-zinc-400 mt-4">
-                    <sp
+                    <span>Transmutación</span>
+                    <span className="text-white italic">12 Máximas</span>
+                  </div>
+                  <div className="w-full h-1 bg-zinc-900 rounded-full">
+                    <div className="h-full bg-white w-[60%] rounded-full shadow-[0_0_8px_#ffffff]"></div>
+                  </div>
+                </div>
+
+                <button className="w-full py-4 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center gap-2 text-[8px] font-black uppercase tracking-[0.4em] text-zinc-400 hover:text-white transition-all">
+                  Descargar Certificado <Download size={14} />
+                </button>
+              </div>
+            </div>
+
+            <div className="glass p-6 rounded-3xl flex items-start gap-4 border border-white/5">
+               <Info size={18} className="text-yellow-600 shrink-0 mt-1" />
+               <p className="text-[10px] italic text-zinc-500 leading-relaxed">
+                 Esta licencia certifica que el usuario tiene una gestión energética optimizada. Es ideal para adjuntar en propuestas de negocios o perfiles profesionales de alto rendimiento.
+               </p>
+            </div>
+          </section>
+        )}
+
+      </main>
+
+      {/* NAVBAR UNIFICADO (SISTEMICAR OS) */}
+      <nav className="fixed bottom-0 w-full bg-black/80 backdrop-blur-3xl border-t border-white/5 flex justify-around p-4 pb-10 z-[100] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+        <button 
+          onClick={() => {setActiveTab('scanner'); resetScanner();}} 
+          className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'scanner' ? 'text-yellow-600 scale-110' : 'text-zinc-600 hover:text-zinc-400'}`}
+        >
+          <div className={`p-2 rounded-2xl ${activeTab === 'scanner' ? 'bg-yellow-600/10' : ''}`}>
+            <Gauge size={24} />
+          </div>
+          <span className="text-[7px] font-black uppercase tracking-widest">Escáner</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('alquimia')} 
+          className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'alquimia' ? 'text-yellow-600 scale-110' : 'text-zinc-600 hover:text-zinc-400'}`}
+        >
+          <div className={`p-2 rounded-2xl ${activeTab === 'alquimia' ? 'bg-yellow-600/10' : ''}`}>
+            <Flame size={24} />
+          </div>
+          <span className="text-[7px] font-black uppercase tracking-widest">Alquimia</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('wisdom')} 
+          className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'wisdom' ? 'text-yellow-600 scale-110' : 'text-zinc-600 hover:text-zinc-400'}`}
+        >
+          <div className={`p-2 rounded-2xl ${activeTab === 'wisdom' ? 'bg-yellow-600/10' : ''}`}>
+            <BrainCircuit size={24} />
+          </div>
+          <span className="text-[7px] font-black uppercase tracking-widest">Bóveda</span>
+        </button>
+        
+        <button 
+          onClick={() => setActiveTab('report')} 
+          className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${activeTab === 'report' ? 'text-yellow-600 scale-110' : 'text-zinc-600 hover:text-zinc-400'}`}
+        >
+          <div className={`p-2 rounded-2xl ${activeTab === 'report' ? 'bg-yellow-600/10' : ''}`}>
+            <LayoutDashboard size={24} />
+          </div>
+          <span className="text-[7px] font-black uppercase tracking-widest">Licencia</span>
+        </button>
+      </nav>
+
+      {/* OVERLAY DE ESTILO GLOBALES */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@1,700&display=swap');
+        
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); }
+        body { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+        ::-webkit-scrollbar { display: none; }
+        
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slide-in-from-bottom { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slide-in-from-right { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      `}} />
+
+    </div>
+  );
+};
+
+export default App;
